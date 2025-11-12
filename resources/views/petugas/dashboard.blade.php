@@ -233,78 +233,98 @@
                   <td class="text-center">{{ \Carbon\Carbon::parse($p->created_at)->format('d M Y') }}</td>
                   <td class="text-center">
                     @if($p->status == 'Diajukan')
-                      <@elseif($p->status == 'Disetujui')
-  <span class="badge bg-primary">Disetujui</span>
-@elseif($p->status == 'Diproses')
-  <span class="badge bg-info">Diproses</span>
-@elseif($p->status == 'Selesai')
-  <span class="badge bg-success">Selesai</span>
-@elseif($p->status == 'Ditolak')
-  <span class="badge bg-danger">Ditolak</span>
-@endif
-
+                      <span class="badge bg-secondary">Diajukan</span>
+                    @elseif($p->status == 'Disetujui')
+                      <span class="badge bg-primary">Disetujui</span>
+                    @elseif($p->status == 'Diproses')
+                      <span class="badge bg-info">Diproses</span>
+                    @elseif($p->status == 'Selesai')
+                      <span class="badge bg-success">Selesai</span>
+                    @elseif($p->status == 'Ditolak')
+                      <span class="badge bg-danger">Ditolak</span>
+                    @endif
                   </td>
                   <td class="text-center">
                     <div class="action-buttons justify-content-center">
 
-  <!-- Tombol Detail -->
-  <button 
-    class="btn btn-sm btn-outline-primary"
-    data-bs-toggle="modal"
-    data-bs-target="#detailModal"
-    data-nama="{{ $p->nama_pengaduan }}"
-    data-deskripsi="{{ $p->deskripsi }}"
-    data-lokasi="{{ $p->lokasi }}"
-    data-foto="{{ asset('storage/' . $p->foto) }}"
-    data-status="{{ $p->status }}"
-    data-user="{{ $p->user->name ?? '-' }}"
-    data-petugas="{{ $p->petugas->nama ?? '-' }}"
-    data-tglpengajuan="{{ \Carbon\Carbon::parse($p->tgl_pengajuan)->format('d M Y') }}"
-    data-tglselesai="{{ $p->tgl_selesai ? \Carbon\Carbon::parse($p->tgl_selesai)->format('d M Y') : '-' }}"
-    data-saran="{{ $p->saran_petugas ?? '-' }}"
-    title="Lihat Detail">
-    <i class="fa fa-eye"></i>
-  </button>
-{{-- Tombol aksi berdasarkan status --}}
-@if($p->status === 'Diajukan' || $p->status === 'Disetujui')
-    <!-- TOLAK Pengaduan -->
-    <a href="{{ route('petugas.pengaduan.tolak.form', $p->id_pengaduan) }}" 
-       class="btn btn-sm btn-outline-danger" 
-       title="Tolak Pengaduan">
-        <i class="fa fa-times"></i>
-    </a>
+                      <!-- Tombol Detail -->
+                      <button 
+                        class="btn btn-sm btn-outline-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#detailModal"
+                        data-nama="{{ $p->nama_pengaduan }}"
+                        data-deskripsi="{{ $p->deskripsi }}"
+                        data-lokasi="{{ $p->lokasi }}"
+                        data-foto="{{ asset('storage/' . $p->foto) }}"
+                        data-status="{{ $p->status }}"
+                        data-user="{{ $p->user->name ?? '-' }}"
+                        data-petugas="{{ $p->petugas->nama ?? '-' }}"
+                        data-tglpengajuan="{{ \Carbon\Carbon::parse($p->tgl_pengajuan)->format('d M Y') }}"
+                        data-tglselesai="{{ $p->tgl_selesai ? \Carbon\Carbon::parse($p->tgl_selesai)->format('d M Y') : '-' }}"
+                        data-saran="{{ $p->saran_petugas ?? '-' }}"
+                        title="Lihat Detail">
+                        <i class="fa fa-eye"></i>
+                      </button>
 
-    <!-- MULAI pengerjaan (jika status Disetujui) -->
-    @if($p->status === 'Disetujui')
-    <form method="POST" action="{{ route('petugas.pengaduan.mulai', $p->id_pengaduan) }}" class="d-inline">
-        @csrf
-        <button type="submit" class="btn btn-sm btn-outline-warning" onclick="return confirm('Mulai pengerjaan pengaduan ini?')" title="Mulai Pengerjaan">
-            <i class="fa fa-play"></i>
-        </button>
-    </form>
-    @endif
+                      {{-- Tombol aksi berdasarkan status --}}
+                      @if($p->status === 'Disetujui')
+                          <!-- MULAI pengerjaan -->
+                          <form method="POST" action="{{ route('petugas.pengaduan.mulai', $p->id_pengaduan) }}" class="d-inline">
+                              @csrf
+                              <button type="submit" class="btn btn-sm btn-outline-warning" onclick="return confirm('Mulai pengerjaan pengaduan ini?')" title="Mulai Pengerjaan">
+                                  <i class="fa fa-play"></i>
+                              </button>
+                          </form>
 
-@elseif($p->status === 'Diproses')
-    <!-- SELESAIKAN -->
-    <form method="POST" action="{{ route('petugas.pengaduan.selesai', $p->id_pengaduan) }}" class="d-inline">
-        @csrf
-        <button type="submit" class="btn btn-sm btn-outline-success" onclick="return confirm('Yakin ingin menyelesaikan pengaduan ini?')" title="Selesaikan Pengaduan">
-            <i class="fa fa-check"></i>
-        </button>
-    </form>
+                      @elseif($p->status === 'Diproses')
+                          <!-- SELESAIKAN -->
+                          <form method="POST" action="{{ route('petugas.pengaduan.selesai', $p->id_pengaduan) }}" class="d-inline">
+                              @csrf
+                              <button type="submit" class="btn btn-sm btn-outline-success" onclick="return confirm('Yakin ingin menyelesaikan pengaduan ini?')" title="Selesaikan Pengaduan">
+                                  <i class="fa fa-check-double"></i>
+                              </button>
+                          </form>
 
-@elseif($p->status === 'Selesai')
-    <!-- SARAN -->
-    @if(!$p->saran_petugas)
-        <a href="{{ route('petugas.formsaran', $p->id_pengaduan) }}" class="btn btn-sm btn-outline-primary" title="Kirim Saran">
-            <i class="fa fa-comment-dots"></i>
-        </a>
-    @else
-        <span class="text-success small" title="Saran sudah dikirim">
-            <i class="fa fa-check-circle"></i>
-        </span>
-    @endif
-@endif
+                      @elseif($p->status === 'Selesai')
+                          <!-- SARAN -->
+                          @if(!$p->saran_petugas)
+                              <a href="{{ route('petugas.formsaran', $p->id_pengaduan) }}" class="btn btn-sm btn-outline-primary" title="Kirim Saran">
+                                  <i class="fa fa-comment-dots"></i>
+                              </a>
+                          @else
+                              <span class="text-success small" title="Saran sudah dikirim">
+                                  <i class="fa fa-check-circle"></i>
+                              </span>
+                          @endif
+                      @endif
+
+                      <!-- Tombol Cetak -->
+                      <button type="button" 
+                              class="btn btn-sm btn-outline-secondary btn-print" 
+                              title="Cetak"
+                              data-item='@json($p)'
+                              onclick="printFromData(this)">
+                        <i class="fa fa-print"></i>
+                      </button>
+
+                    </div>
+                  </td>
+                </tr>
+              @empty
+                <tr>
+                  <td colspan="7" class="empty-state">
+                    <i class="fa fa-inbox"></i>
+                    <p class="mb-0">Belum ada pengaduan.</p>
+                  </td>
+                </tr>
+              @endforelse
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal Foto -->
   <div class="modal fade" id="photoModal" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -401,8 +421,6 @@
     </div>
   </div>
 
-  <!-- Terima modal removed - acceptance now handled via plain POST form per-row (no JS required) -->
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // Saat tombol Detail diklik, isi data ke dalam modal
@@ -421,8 +439,6 @@
       document.getElementById('detailSaran').textContent = button.getAttribute('data-saran');
       document.getElementById('detailFoto').src = button.getAttribute('data-foto');
     });
-
-    // Acceptance now handled via server POST form per row (no JS required)
 
     // Fungsi untuk menampilkan foto dalam modal
     function showPhoto(photoUrl) {
@@ -486,8 +502,6 @@
         w.onload = function() {
           setTimeout(() => {
             w.print();
-            // jangan otomatis menutup agar pengguna bisa melihat hasil, tapi kita bisa tutup setelah delay jika diinginkan
-            // setTimeout(() => w.close(), 500);
           }, 300);
         };
       } catch (err) {

@@ -202,6 +202,14 @@
       line-height: 1.4;
     }
 
+    .table td.saran-cell {
+      white-space: normal;
+      min-width: 260px;
+      max-width: none;
+      line-height: 1.4;
+      font-size: 14px;
+    }
+
     .table tbody tr:hover {
       background-color: rgba(13, 110, 253, 0.05);
     }
@@ -444,7 +452,7 @@
                   <th width="10%">Petugas</th>
                   <th width="10%" class="text-center">Tgl Pengajuan</th>
                   <th width="10%" class="text-center">Tgl Selesai</th>
-                  <th width="15%">Saran Petugas</th>
+                  <th width="25%">Saran Petugas</th>
                   <th width="10%" class="text-center">Foto Saran</th>
                 </tr>
               </thead>
@@ -492,7 +500,7 @@
                   </td>
 
                   {{-- Saran Petugas --}}
-                  <td>{{ $p->saran_petugas ?? '-' }}</td>
+                  <td class="saran-cell">{{ $p->saran_petugas ?? '-' }}</td>
 
                   {{-- Foto Saran --}}
                   <td class="text-center">

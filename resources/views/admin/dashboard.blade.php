@@ -323,8 +323,8 @@
     </form>
   @endif
 
-  <!-- ❌ Tombol Tolak dengan Saran - untuk status Diajukan dan Disetujui -->
-  @if(in_array($item->status, ['Diajukan', 'Disetujui']))
+  <!-- ❌ Tombol Tolak dengan Saran - hanya untuk status Diajukan -->
+  @if($item->status === 'Diajukan')
     <form method="POST" action="{{ route('admin.pengaduan.tolakWithSaran', $item->id_pengaduan) }}" class="d-inline">
       @csrf
       @method('PUT')

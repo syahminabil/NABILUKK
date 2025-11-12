@@ -40,7 +40,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Dashboard
-   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Pengaduan (Admin)
     Route::prefix('admin/pengaduan')->name('admin.pengaduan.')->group(function () {
@@ -113,9 +113,9 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
     // Dashboard Petugas
     Route::get('/petugas/dashboard', [PetugasDashboardController::class, 'index'])->name('petugas.dashboard');
 
-    // 🆕 TAMBAHKAN 2 RUTE INI UNTUK SARAN
-    Route::get('/petugas/formsaran/{id}', [PetugasController::class, 'formSaran'])->name('petugas.formsaran');
-    Route::post('/petugas/kirim-saran/{id}', [PetugasController::class, 'kirimSaran'])->name('petugas.kirim.saran');
+    // ✅ PERBAIKAN: Ubah ke PetugasDashboardController
+    Route::get('/petugas/formsaran/{id}', [PetugasDashboardController::class, 'formSaran'])->name('petugas.formsaran');
+    Route::post('/petugas/kirim-saran/{id}', [PetugasDashboardController::class, 'kirimSaran'])->name('petugas.kirim.saran');
 
     // Pengaduan actions
     Route::prefix('petugas/pengaduan')->name('petugas.pengaduan.')->group(function () {

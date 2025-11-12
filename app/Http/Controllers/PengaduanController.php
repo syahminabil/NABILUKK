@@ -83,6 +83,12 @@ class PengaduanController extends Controller
             'saran_petugas'  => 'nullable|string',
         ]);
 
+        // Jika admin mengubah status menjadi Selesai dan tidak mengisi tanggal selesai,
+        // set otomatis ke waktu saat ini supaya tampil di cetak dan dashboard.
+        if (isset($data['status']) && $data['status'] === 'Selesai' && empty($data['tgl_selesai'])) {
+            $data['tgl_selesai'] = now();
+        }
+
         $pengaduan->update($data);
 
         if ($request->wantsJson() || $request->isJson()) {

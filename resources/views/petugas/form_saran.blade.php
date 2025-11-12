@@ -86,30 +86,53 @@
             </div>
 
             <!-- Form Saran -->
-            <form action="{{ route('petugas.kirim.saran', $pengaduan->id_pengaduan) }}" method="POST">
+            <form action="{{ route('petugas.kirim.saran', $pengaduan->id_pengaduan) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 
                 <div class="mb-4">
                     <label for="saran_petugas" class="form-label fw-semibold">
                         <i class="fas fa-edit me-2"></i>Saran Petugas
                     </label>
-                    <textarea 
-                        class="form-control @error('saran_petugas') is-invalid @enderror" 
-                        id="saran_petugas" 
-                        name="saran_petugas" 
-                        rows="6" 
+                    <textarea
+                        class="form-control @error('saran_petugas') is-invalid @enderror"
+                        id="saran_petugas"
+                        name="saran_petugas"
+                        rows="6"
                         placeholder="Masukkan saran, catatan, atau solusi yang telah dilakukan untuk pengaduan ini..."
                         required>{{ old('saran_petugas') }}</textarea>
-                    
+
                     @error('saran_petugas')
                         <div class="invalid-feedback">
                             <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
                         </div>
                     @enderror
-                    
+
                     <div class="form-text">
                         <i class="fas fa-lightbulb me-1"></i>
                         Saran minimal 5 karakter dan maksimal 1000 karakter.
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="foto_saran" class="form-label fw-semibold">
+                        <i class="fas fa-camera me-2"></i>Foto Saran (Opsional)
+                    </label>
+                    <input
+                        type="file"
+                        class="form-control @error('foto_saran') is-invalid @enderror"
+                        id="foto_saran"
+                        name="foto_saran"
+                        accept="image/*">
+
+                    @error('foto_saran')
+                        <div class="invalid-feedback">
+                            <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
+                        </div>
+                    @enderror
+
+                    <div class="form-text">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Upload foto hasil perbaikan atau dokumentasi (maksimal 2MB, format: JPG, PNG, JPEG).
                     </div>
                 </div>
 

@@ -50,7 +50,7 @@ class PetugasDashboardController extends Controller
     public function terima($id)
     {
         $pengaduan = Pengaduan::findOrFail($id);
-        $petugas = Petugas::where('nama', Auth::user()->name)->first();
+        $petugas = Petugas::where('user_id', Auth::id())->first();
 
         if (!$petugas) {
             return back()->with('error', 'Data petugas tidak ditemukan.');
@@ -65,33 +65,52 @@ class PetugasDashboardController extends Controller
     }
 
     // ✅ MULAI → ubah status ke Diproses
-   public function mulai($id)
-{
-    $pengaduan = Pengaduan::findOrFail($id);
+    public function mulai($id)
+    {
+        $pengaduan = Pengaduan::findOrFail($id);
 
-    // Cek agar hanya pengaduan disetujui yang bisa dimulai
-    if ($pengaduan->status !== 'Disetujui') {
-        return redirect()->back()->with('error', 'Pengaduan belum disetujui admin atau sudah diproses.');
+        // Cek agar hanya pengaduan disetujui yang bisa dimulai
+        if ($pengaduan->status !== 'Disetujui') {
+            return redirect()->back()->with('error', 'Pengaduan belum disetujui admin atau sudah diproses.');
+        }
+
+        // Pastikan id_petugas terisi
+        if (!$pengaduan->id_petugas) {
+            $petugas = Petugas::where('user_id', Auth::id())->first();
+            if ($petugas) {
+                $pengaduan->id_petugas = $petugas->id_petugas;
+            }
+        }
+
+        $pengaduan->update(['status' => 'Diproses', 'id_petugas' => $pengaduan->id_petugas]);
+
+        return redirect()->route('petugas.dashboard')->with('success', 'Pengaduan telah dimulai dan status diubah menjadi Diproses.');
     }
 
-    $pengaduan->update(['status' => 'Diproses']);
+    public function selesai($id)
+    {
+        $pengaduan = Pengaduan::findOrFail($id);
 
-    return redirect()->route('petugas.dashboard')->with('success', 'Pengaduan telah dimulai dan status diubah menjadi Diproses.');
-}
+        if ($pengaduan->status !== 'Diproses') {
+            return redirect()->back()->with('error', 'Hanya pengaduan yang sedang diproses yang bisa diselesaikan.');
+        }
 
+        // Pastikan id_petugas terisi
+        if (!$pengaduan->id_petugas) {
+            $petugas = Petugas::where('user_id', Auth::id())->first();
+            if ($petugas) {
+                $pengaduan->id_petugas = $petugas->id_petugas;
+            }
+        }
 
-public function selesai($id)
-{
-    $pengaduan = \App\Models\Pengaduan::findOrFail($id);
+        $pengaduan->update([
+            'status' => 'Selesai',
+            'tgl_selesai' => now(),
+            'id_petugas' => $pengaduan->id_petugas,
+        ]);
 
-    if ($pengaduan->status !== 'Diproses') {
-        return redirect()->back()->with('error', 'Hanya pengaduan yang sedang diproses yang bisa diselesaikan.');
+        return redirect()->back()->with('success', 'Pengaduan selesai. Sekarang Anda bisa memberikan saran.');
     }
-
-    $pengaduan->update(['status' => 'Selesai']);
-
-    return redirect()->back()->with('success', 'Pengaduan selesai. Sekarang Anda bisa memberikan saran.');
-}
 
     // ✅ FORM PENOLAKAN
     public function formTolak($id)
@@ -108,7 +127,7 @@ public function selesai($id)
         ]);
 
         $pengaduan = Pengaduan::findOrFail($id);
-        $petugas = Petugas::where('nama', Auth::user()->name)->first();
+        $petugas = Petugas::where('user_id', Auth::id())->first();
 
         if (!$petugas) {
             return back()->with('error', 'Data petugas tidak ditemukan.');
@@ -130,35 +149,58 @@ public function selesai($id)
         return redirect()->route('petugas.dashboard')->with('success', 'Pengaduan ditolak dan dicatat!');
     }
 
-    // ✅ FORM SARAN (baru)
+    // ✅ FORM SARAN
     public function formSaran($id)
     {
         $pengaduan = Pengaduan::with('user')->findOrFail($id);
+        
+        // Pastikan hanya pengaduan selesai yang bisa diberi saran
+        if ($pengaduan->status !== 'Selesai') {
+            return redirect()->route('petugas.dashboard')->with('error', 'Saran hanya bisa diberikan untuk pengaduan yang sudah selesai.');
+        }
+
         return view('petugas.form_saran', compact('pengaduan'));
     }
 
+    // ✅ KIRIM SARAN
     public function kirimSaran(Request $request, $id)
-{
-    $request->validate([
-        'saran_petugas' => 'nullable|string',
-        'foto_saran' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-    ]);
+    {
+        $request->validate([
+            'saran_petugas' => 'required|string|min:5|max:1000',
+            'foto_saran' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
 
-    $pengaduan = Pengaduan::findOrFail($id);
-    $pengaduan->saran_petugas = $request->saran_petugas;
+        $pengaduan = Pengaduan::findOrFail($id);
+        
+        // Pastikan id_petugas terisi
+        if (!$pengaduan->id_petugas) {
+            $petugas = Petugas::where('user_id', Auth::id())->first();
+            if ($petugas) {
+                $pengaduan->id_petugas = $petugas->id_petugas;
+            }
+        }
 
-    // 📷 Simpan foto saran sebagai PNG
-    if ($request->hasFile('foto_saran')) {
-        $file = $request->file('foto_saran');
-        $filename = uniqid() . '.png';
-        $path = $file->storeAs('public/foto_saran', $filename);
-        $pengaduan->foto_saran = 'foto_saran/' . $filename;
+        // Update saran petugas
+        $pengaduan->saran_petugas = $request->saran_petugas;
+
+        // 📷 Simpan foto saran
+        if ($request->hasFile('foto_saran')) {
+            // Hapus foto saran lama jika ada
+            if ($pengaduan->foto_saran && Storage::disk('public')->exists($pengaduan->foto_saran)) {
+                Storage::disk('public')->delete($pengaduan->foto_saran);
+            }
+
+            $file = $request->file('foto_saran');
+            $extension = strtolower($file->getClientOriginalExtension());
+            $filename = uniqid() . '.' . $extension;
+            $file->storeAs('public/foto_saran', $filename);
+            $pengaduan->foto_saran = 'foto_saran/' . $filename;
+        }
+
+        $pengaduan->save();
+
+        return redirect()->route('petugas.dashboard')->with('success', 'Saran petugas berhasil dikirim.');
     }
-
-    $pengaduan->save();
-
-    return back()->with('success', 'Saran petugas berhasil dikirim.');
-}
 
     // ✅ HAPUS
     public function destroy($id)

@@ -24,6 +24,7 @@ class Pengaduan extends Model
         'tgl_pengajuan',
         'tgl_selesai',
         'saran_petugas',
+        'foto_saran',
     ];
 
     // 🔹 Relasi ke pelapor (users)

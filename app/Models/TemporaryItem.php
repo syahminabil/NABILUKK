@@ -16,6 +16,10 @@ class TemporaryItem extends Model
         'id_item',
         'nama_barang_baru',
         'lokasi_barang_baru',
+        'foto',
+        'id_pengaduan',
+        'id_user',
+        'status',
     ];
 
     public function item()

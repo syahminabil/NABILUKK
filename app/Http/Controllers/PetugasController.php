@@ -125,34 +125,4 @@ class PetugasController extends Controller
         $admins = User::where('role', 'admin')->get();
         return view('admin.petugas.admin', compact('admins'));
     }
-
-    /**
-     * ✅ Form saran petugas (hanya jika pengaduan sudah Selesai)
-     */
-   public function formSaran($id)
-{
-    $pengaduan = \App\Models\Pengaduan::findOrFail($id);
-
-    if ($pengaduan->status !== 'Selesai') {
-        return redirect()->route('petugas.dashboard')->with('error', 'Saran hanya bisa diberikan jika status sudah selesai.');
-    }
-
-    return view('petugas.form_saran', compact('pengaduan'));
-}
-
-public function kirimSaran(Request $request, $id)
-{
-    $request->validate([
-        'saran_petugas' => 'required|string|min:5|max:1000',
-    ]);
-
-    $pengaduan = \App\Models\Pengaduan::findOrFail($id);
-
-    $pengaduan->update([
-        'saran_petugas' => $request->saran_petugas,
-    ]);
-
-    return redirect()->route('petugas.dashboard')->with('success', 'Saran berhasil disimpan!');
-}
-
 }

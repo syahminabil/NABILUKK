@@ -211,7 +211,7 @@
       <div class="collapse navbar-collapse" id="navbarUser">
         <ul class="navbar-nav mx-auto">
           <li class="nav-item"><a class="nav-link" href="{{ route('user.dashboard') }}"><i class="fa fa-home"></i> Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link active" href="{{ route('user.create') }}"><i class="fa fa-plus"></i> Buat Pengaduan</a></li>
+          <li class="nav-item"><a class="nav-link active" href="{{ route('user.pengaduan.create') }}"><i class="fa fa-plus"></i> Buat Pengaduan</a></li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="historyDropdown" role="button" data-bs-toggle="dropdown">
               <i class="fa fa-history"></i> Riwayat Pengaduan
@@ -260,7 +260,7 @@
       </div>
     @endif
 
-    <form action="{{ route('user.store_pengaduan') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('user.pengaduan.store') }}" method="POST" enctype="multipart/form-data">
       @csrf
 
       <div class="mb-3">
@@ -312,7 +312,7 @@
   </div>
 
   <script>
-        $('#id_lokasi').on('change', function () {
+    $('#id_lokasi').on('change', function () {
       let idLokasi = $(this).val();
       $('#id_item').html('<option value="">Memuat...</option>');
 
