@@ -315,23 +315,26 @@
 
   <!-- ✅ Tombol Setujui - HANYA untuk status Diajukan -->
   @if($item->status === 'Diajukan')
-    <form method="POST" action="{{ route('admin.pengaduan.updateStatus', [$item->id_pengaduan, 'Disetujui']) }}" onsubmit="return confirm('Setujui pengaduan ini?');">
+    <form method="POST" action="{{ route('admin.pengaduan.updateStatus', $item->id_pengaduan) }}" onsubmit="return confirm('Setujui pengaduan ini?');">
       @csrf
       @method('PUT')
+      <input type="hidden" name="status" value="Disetujui">
       <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-check"></i></button>
     </form>
+  @endif
 
-    <!-- ❌ Tombol Tolak dengan Saran - Tanpa Modal -->
+  <!-- ❌ Tombol Tolak dengan Saran - untuk status Diajukan dan Disetujui -->
+  @if(in_array($item->status, ['Diajukan', 'Disetujui']))
     <form method="POST" action="{{ route('admin.pengaduan.tolakWithSaran', $item->id_pengaduan) }}" class="d-inline">
       @csrf
       @method('PUT')
       <input type="hidden" name="status" value="Ditolak">
-      <button type="button" class="btn btn-danger btn-sm" 
-              onclick="if(confirm('Tolak pengaduan ini?')) { 
-                var saran = prompt('Berikan alasan penolakan / saran untuk perbaikan:'); 
-                if(saran !== null) { 
-                  this.form.querySelector('input[name=\'saran_petugas\']').value = saran; 
-                  this.form.submit(); 
+      <button type="button" class="btn btn-danger btn-sm"
+              onclick="if(confirm('Tolak pengaduan ini?')) {
+                var saran = prompt('Berikan alasan penolakan / saran untuk perbaikan:');
+                if(saran !== null) {
+                  this.form.querySelector('input[name=\'saran_petugas\']').value = saran;
+                  this.form.submit();
                 }
               }">
         <i class="fa fa-times"></i>
