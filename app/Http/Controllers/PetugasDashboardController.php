@@ -69,20 +69,21 @@ class PetugasDashboardController extends Controller
     {
         $pengaduan = Pengaduan::findOrFail($id);
 
-        // Cek agar hanya pengaduan disetujui yang bisa dimulai
-        if ($pengaduan->status !== 'Disetujui') {
-            return redirect()->back()->with('error', 'Pengaduan belum disetujui admin atau sudah diproses.');
+        // Cek agar hanya pengaduan dengan status Diajukan atau Disetujui yang bisa dimulai
+        if (!in_array($pengaduan->status, ['Diajukan', 'Disetujui'])) {
+            return redirect()->back()->with('error', 'Pengaduan tidak dapat dimulai. Status harus Diajukan atau Disetujui.');
         }
 
         // Pastikan id_petugas terisi
-        if (!$pengaduan->id_petugas) {
-            $petugas = Petugas::where('user_id', Auth::id())->first();
-            if ($petugas) {
-                $pengaduan->id_petugas = $petugas->id_petugas;
-            }
+        $petugas = Petugas::where('user_id', Auth::id())->first();
+        if (!$petugas) {
+            return redirect()->back()->with('error', 'Data petugas tidak ditemukan.');
         }
 
-        $pengaduan->update(['status' => 'Diproses', 'id_petugas' => $pengaduan->id_petugas]);
+        $pengaduan->update([
+            'status' => 'Diproses', 
+            'id_petugas' => $petugas->id_petugas
+        ]);
 
         return redirect()->route('petugas.dashboard')->with('success', 'Pengaduan telah dimulai dan status diubah menjadi Diproses.');
     }

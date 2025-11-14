@@ -267,12 +267,12 @@
                       </button>
 
                       {{-- Tombol aksi berdasarkan status --}}
-                      @if($p->status === 'Disetujui')
+                      @if($p->status === 'Diajukan' || $p->status === 'Disetujui')
                           <!-- MULAI pengerjaan -->
                           <form method="POST" action="{{ route('petugas.pengaduan.mulai', $p->id_pengaduan) }}" class="d-inline">
                               @csrf
                               <button type="submit" class="btn btn-sm btn-outline-warning" onclick="return confirm('Mulai pengerjaan pengaduan ini?')" title="Mulai Pengerjaan">
-                                  <i class="fa fa-play"></i>
+                                  <i class="fa fa-play"></i> Mulai
                               </button>
                           </form>
 
