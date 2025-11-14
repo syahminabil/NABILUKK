@@ -17,6 +17,11 @@ class TemporaryItem extends Model
         'nama_barang_baru',
         'lokasi_barang_baru',
         'foto',
+        'id_lokasi',
+        'judul_pengaduan',
+        'deskripsi_pengaduan',
+        'foto_pengaduan',
+        'deskripsi_barang_baru',
         'id_pengaduan',
         'id_user',
         'status',
@@ -25,5 +30,10 @@ class TemporaryItem extends Model
     public function item()
     {
         return $this->belongsTo(Item::class, 'id_item', 'id_item');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
 }

@@ -5,56 +5,18 @@
     <title>Daftar Ruang</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', sans-serif;
-            color: #111;
-        }
-        .container-custom {
-            max-width: 800px;
-            margin: 60px auto;
-            background: #fff;
-            border-radius: 16px;
-            padding: 30px 40px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-            border-top: 5px solid #dc3545;
-        }
-        h2 {
-            font-weight: 700;
-            color: #000;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-        .table {
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .table thead {
-            background-color: #000;
-            color: #fff;
-        }
-        .table tbody tr:hover {
-            background-color: #dc3545;
-            color: #fff;
-            transition: 0.2s;
-        }
-        .table td, .table th {
-            vertical-align: middle;
-            text-align: center;
-        }
-        .btn-back {
-            background-color: #000;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-weight: 500;
-            padding: 8px 16px;
-            text-decoration: none;
-            transition: 0.2s;
-        }
-        .btn-back:hover {
-            background-color: #dc3545;
-        }
+        :root { --indigo:#4338ca; --blue:#2563eb; --gray:#f8fafc; --white:#ffffff; --text-dark:#1e293b; }
+        body { background-color: var(--gray); font-family:'Segoe UI', sans-serif; color: var(--text-dark); }
+        .container-custom { max-width: 1000px; margin: 60px auto; background: var(--white); border-radius: 20px; padding: 30px 40px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-top: 6px solid var(--blue); }
+        h2 { font-weight: 700; color: var(--indigo); margin-bottom: 25px; text-align: center; }
+        .table { border-radius: 12px; overflow: hidden; }
+        .table thead { background: linear-gradient(to right, var(--indigo), var(--blue)); color: #fff; }
+        .table tbody tr:hover { background-color: #eef2ff; color: inherit; transition: 0.2s; }
+        .table td, .table th { vertical-align: middle; text-align: center; }
+        .btn-back { background: linear-gradient(to right, var(--indigo), var(--blue)); color: #fff; border: none; border-radius: 10px; font-weight: 500; padding: 8px 16px; text-decoration: none; transition: 0.25s; }
+        .btn-back:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-outline-dark { border-color: var(--blue); color: var(--blue); }
+        .btn-outline-dark:hover { background: var(--blue); color: #fff; }
     </style>
 </head>
 <body>

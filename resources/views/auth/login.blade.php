@@ -21,12 +21,25 @@
           Silahkan login dengan username dan password yang telah anda miliki.
       </p>
 
+      <!-- Notifikasi error sukses/validasi -->
+      @if(session('error'))
+        <div class="mb-4 px-4 py-2 rounded bg-red-100 text-red-700 text-sm">
+          {{ session('error') }}
+        </div>
+      @endif
+
+      @if($errors->any())
+        <div class="mb-4 px-4 py-2 rounded bg-red-100 text-red-700 text-sm">
+          Terdapat kesalahan pada input. Periksa kembali.
+        </div>
+      @endif
+
       <!-- Form login -->
       <form method="POST" action="{{ route('login.post') }}" class="space-y-5">
           @csrf
           <div>
               <label class="block text-gray-600 font-medium text-sm mb-1">Email</label>
-              <input type="email" name="email" placeholder="Masukkan Email"
+              <input type="email" name="email" placeholder="Masukkan Email" value="{{ old('email') }}"
                      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
           </div>
 

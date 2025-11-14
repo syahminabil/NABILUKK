@@ -5,70 +5,19 @@
     <title>Tambah Barang di {{ $lokasi->nama_lokasi }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', sans-serif;
-        }
-        .container-custom {
-            max-width: 700px;
-            margin: 60px auto;
-            background: #fff;
-            border-radius: 16px;
-            padding: 35px 40px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-            border-top: 5px solid #dc3545;
-        }
-        h2 {
-            font-weight: 700;
-            color: #000;
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        label {
-            font-weight: 600;
-            color: #111;
-        }
-        .form-control, textarea {
-            border-radius: 8px;
-            border: 1px solid #ced4da;
-            font-size: 15px;
-        }
-        .form-control:focus {
-            border-color: #dc3545;
-            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.2);
-        }
-        .btn-save {
-            background-color: #000;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 18px;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-        .btn-save:hover {
-            background-color: #dc3545;
-            color: #fff;
-        }
-        .btn-back {
-            background-color: #6c757d;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 18px;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-        .btn-back:hover {
-            background-color: #000;
-            color: #fff;
-        }
-        .alert {
-            border-radius: 8px;
-        }
-        small.text-muted {
-            font-size: 13px;
-        }
+        :root { --indigo:#4338ca; --blue:#2563eb; --gray:#f8fafc; --white:#ffffff; --text-dark:#1e293b; }
+        body { background-color: var(--gray); font-family:'Segoe UI', sans-serif; }
+        .container-custom { max-width: 800px; margin: 60px auto; background: var(--white); border-radius: 20px; padding: 35px 40px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-top: 6px solid var(--blue); }
+        h2 { font-weight: 700; color: var(--indigo); text-align: center; margin-bottom: 25px; }
+        label { font-weight: 600; color: var(--text-dark); }
+        .form-control, textarea { border-radius: 10px; border: 1px solid #cbd5e1; font-size: 15px; }
+        .form-control:focus { border-color: var(--blue); box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.2); }
+        .btn-save { background: linear-gradient(to right, var(--indigo), var(--blue)); color: #fff; border: none; border-radius: 10px; padding: 8px 18px; font-weight: 600; transition: 0.25s; }
+        .btn-save:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-back { background: linear-gradient(to right, var(--indigo), var(--blue)); color: #fff; border: none; border-radius: 10px; padding: 8px 18px; font-weight: 600; transition: 0.25s; }
+        .btn-back:hover { opacity: 0.9; transform: translateY(-2px); }
+        .alert { border-radius: 10px; }
+        small.text-muted { font-size: 13px; }
     </style>
 </head>
 <body>

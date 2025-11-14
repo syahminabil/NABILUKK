@@ -5,83 +5,19 @@
     <title>Edit Barang: {{ $item->nama_item }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .container-custom {
-            max-width: 750px;
-            background: #fff;
-            border-radius: 16px;
-            padding: 30px 40px;
-            margin: 60px auto;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-            border-top: 5px solid #dc3545;
-        }
-
-        h3 {
-            font-weight: 700;
-            color: #000;
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        label {
-            font-weight: 600;
-            color: #111;
-        }
-
-        input.form-control, textarea.form-control {
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            transition: all 0.2s;
-        }
-
-        input.form-control:focus, textarea.form-control:focus {
-            border-color: #dc3545;
-            box-shadow: 0 0 0 0.2rem rgba(220,53,69,0.2);
-        }
-
-        .btn-save {
-            background-color: #000;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            padding: 10px 20px;
-            transition: 0.2s;
-        }
-
-        .btn-save:hover {
-            background-color: #dc3545;
-        }
-
-        .btn-back {
-            background-color: #6c757d;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-weight: 500;
-            padding: 10px 20px;
-            transition: 0.2s;
-        }
-
-        .btn-back:hover {
-            background-color: #dc3545;
-        }
-
-        .alert {
-            border-radius: 10px;
-        }
-
-        .preview-img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
+        :root { --indigo:#4338ca; --blue:#2563eb; --gray:#f8fafc; --white:#ffffff; --text-dark:#1e293b; }
+        body { background-color: var(--gray); font-family:'Segoe UI', sans-serif; }
+        .container-custom { max-width: 800px; background: var(--white); border-radius: 20px; padding: 30px 40px; margin: 60px auto; box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-top: 6px solid var(--blue); }
+        h3 { font-weight: 700; color: var(--indigo); text-align: center; margin-bottom: 25px; }
+        label { font-weight: 600; color: var(--text-dark); }
+        input.form-control, textarea.form-control { border-radius: 10px; border: 1px solid #cbd5e1; transition: all 0.2s; }
+        input.form-control:focus, textarea.form-control:focus { border-color: var(--blue); box-shadow: 0 0 0 0.2rem rgba(37,99,235,0.2); }
+        .btn-save { background: linear-gradient(to right, var(--indigo), var(--blue)); color: #fff; border: none; border-radius: 10px; font-weight: 600; padding: 10px 20px; transition: 0.25s; }
+        .btn-save:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-back { background: linear-gradient(to right, var(--indigo), var(--blue)); color: #fff; border: none; border-radius: 10px; font-weight: 500; padding: 10px 20px; transition: 0.25s; }
+        .btn-back:hover { opacity: 0.9; transform: translateY(-2px); }
+        .alert { border-radius: 10px; }
+        .preview-img { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1; }
     </style>
 </head>
 <body>

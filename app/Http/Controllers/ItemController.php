@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Lokasi;
 use App\Models\ListLokasi;
-use App\Models\TemporaryItem; // ✅ pastikan kamu punya model ini
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -38,7 +37,7 @@ class ItemController extends Controller
     }
 
     /**
-     * Simpan item baru + histori ke temporary_item
+     * Simpan item baru langsung ke daftar barang/item
      * URL: POST admin/barang/{id_lokasi}/store
      */
     public function store(Request $request, $id_lokasi)
@@ -53,7 +52,7 @@ class ItemController extends Controller
 
         DB::beginTransaction();
         try {
-            // ✅ Simpan ke tabel items
+            // Simpan item baru langsung ke tabel items
             $item = new Item();
             $item->nama_item = $request->nama_item;
             $item->lokasi = $lokasiModel->nama_lokasi ?? '-';
@@ -66,28 +65,21 @@ class ItemController extends Controller
 
             $item->save();
 
-            // ✅ Simpan ke tabel list_lokasi (relasi antara lokasi dan item)
+            // Simpan relasi ke list_lokasi
             ListLokasi::create([
                 'id_lokasi' => $id_lokasi,
                 'id_item' => $item->id_item,
-            ]);
-
-            // ✅ Simpan juga ke tabel temporary_item (histori)
-            TemporaryItem::create([
-                'id_item' => $item->id_item,
-                'nama_barang_baru' => $item->nama_item,
-                'lokasi_barang_baru' => $lokasiModel->nama_lokasi ?? '-',
             ]);
 
             DB::commit();
 
             return redirect()
                 ->route('item.byLokasi', $id_lokasi)
-                ->with('success', 'Item berhasil ditambahkan dan disimpan ke histori.');
+                ->with('success', 'Barang berhasil ditambahkan.');
         } catch (\Throwable $e) {
             DB::rollBack();
 
-            if (isset($path) && Storage::disk('public')->exists($path)) {
+            if (isset($path) && $path && Storage::disk('public')->exists($path)) {
                 Storage::disk('public')->delete($path);
             }
 

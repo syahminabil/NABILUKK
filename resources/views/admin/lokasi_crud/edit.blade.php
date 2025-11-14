@@ -5,74 +5,20 @@
     <title>ADMIN | Edit Ruang</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', sans-serif;
-            color: #111;
-        }
-        .container-custom {
-            max-width: 600px;
-            margin: 60px auto;
-            background: #fff;
-            border-radius: 16px;
-            padding: 30px 40px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-            border-top: 5px solid #dc3545;
-        }
-        h3 {
-            font-weight: 700;
-            color: #000;
-            margin-bottom: 25px;
-        }
-        label {
-            font-weight: 600;
-            color: #111;
-        }
-        .form-control {
-            border-radius: 8px;
-            font-size: 14px;
-            padding: 10px;
-        }
-        .form-control:focus {
-            border-color: #dc3545;
-            box-shadow: 0 0 0 0.2rem rgba(220,53,69,.25);
-        }
-        .btn-submit {
-            background-color: #dc3545;
-            border: none;
-            color: #fff;
-            border-radius: 8px;
-            font-weight: 500;
-            padding: 8px 16px;
-            transition: 0.2s;
-        }
-        .btn-submit:hover {
-            background-color: #b02a37;
-        }
-        .btn-back {
-            background-color: #000;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-weight: 500;
-            padding: 8px 16px;
-            transition: 0.2s;
-            text-decoration: none;
-        }
-        .btn-back:hover {
-            background-color: #dc3545;
-        }
-        .alert-danger {
-            border-left: 4px solid #dc3545;
-            border-radius: 6px;
-        }
-        .alert-danger ul {
-            margin: 0;
-            padding-left: 20px;
-        }
-        .alert-danger li {
-            font-size: 14px;
-        }
+        :root { --indigo:#4338ca; --blue:#2563eb; --gray:#f8fafc; --white:#ffffff; --text-dark:#1e293b; }
+        body { background-color: var(--gray); font-family:'Segoe UI', sans-serif; color: var(--text-dark); }
+        .container-custom { max-width: 700px; margin: 60px auto; background: var(--white); border-radius: 20px; padding: 30px 40px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-top: 6px solid var(--blue); }
+        h3 { font-weight: 700; color: var(--indigo); margin-bottom: 25px; }
+        label { font-weight: 600; color: var(--text-dark); }
+        .form-control { border-radius: 10px; font-size: 14px; padding: 10px; }
+        .form-control:focus { border-color: var(--blue); box-shadow: 0 0 0 0.2rem rgba(37,99,235,.25); }
+        .btn-submit { background: linear-gradient(to right, var(--indigo), var(--blue)); border: none; color: #fff; border-radius: 10px; font-weight: 600; padding: 8px 16px; transition: 0.25s; }
+        .btn-submit:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-back { background: linear-gradient(to right, var(--indigo), var(--blue)); color:#fff; border: none; border-radius: 10px; font-weight: 500; padding: 8px 16px; transition: 0.25s; text-decoration: none; }
+        .btn-back:hover { opacity: 0.9; transform: translateY(-2px); }
+        .alert-danger { border-left: 4px solid var(--blue); border-radius: 8px; }
+        .alert-danger ul { margin: 0; padding-left: 20px; }
+        .alert-danger li { font-size: 14px; }
     </style>
 </head>
 <body>

@@ -15,6 +15,7 @@ use App\Http\Controllers\PetugasItemController;
 use App\Http\Controllers\PetugasLokasiCrudController;
 use App\Http\Controllers\PenolakanController;
 use App\Http\Controllers\PengaduanController;
+use App\Http\Controllers\TemporaryItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -102,6 +103,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             Route::put('/{id}', [LokasiCrudController::class, 'update'])->name('update');
             Route::delete('/{id}', [LokasiCrudController::class, 'destroy'])->name('destroy');
         });
+    });
+
+    // 📦 Temporary Items untuk Admin
+    Route::prefix('admin/temporary')->name('admin.temporary.')->group(function () {
+        Route::get('/', [TemporaryItemController::class, 'index'])->name('index');
+        Route::get('/create', [TemporaryItemController::class, 'create'])->name('create');
+        Route::post('/', [TemporaryItemController::class, 'store'])->name('store');
+        Route::post('/{id}/approve', [TemporaryItemController::class, 'approve'])->name('approve');
+        Route::post('/{id}/reject', [TemporaryItemController::class, 'reject'])->name('reject');
+        Route::delete('/{id}', [TemporaryItemController::class, 'destroy'])->name('destroy');
     });
 });
 

@@ -184,11 +184,6 @@
 
   <!-- ===== NAVBAR ===== -->
   <nav class="navbar navbar-expand-lg navbar-custom px-4">
-    <li class="nav-item">
-    <a class="nav-link" href="{{ route('admin.users.index') }}">
-        <i class="fa fa-users"></i> Data User
-    </a>
-</li>
     <div class="container-fluid">
       <a class="navbar-brand" href="{{ route('dashboard') }}">
         <i class="fa fa-home"></i> Dashboard
@@ -204,6 +199,7 @@
           <li class="nav-item"><a class="nav-link" href="{{ route('admin.daftarAdmin') }}"><i class="fa fa-user-cog"></i> Daftar Admin</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('admin.lokasi.crud.index') }}"><i class="fa fa-list"></i> Daftar Ruang</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('lokasi.index') }}"><i class="fa fa-box"></i> Tambah Barang</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('admin.temporary.index') }}"><i class="fa fa-clock"></i> Temporary</a></li>
         </ul>
 
         <form method="POST" action="{{ route('logout') }}">

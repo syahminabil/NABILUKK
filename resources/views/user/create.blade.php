@@ -268,33 +268,73 @@
         <input type="text" name="nama_pengaduan" id="nama_pengaduan" class="form-control" required value="{{ old('nama_pengaduan') }}">
       </div>
 
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="id_lokasi" class="form-label">Pilih Lokasi</label>
-          <select name="id_lokasi" id="id_lokasi" class="form-select" required>
-            <option value="">-- Pilih Lokasi --</option>
-            @foreach($lokasiList as $lokasi)
-              <option value="{{ $lokasi->id_lokasi }}">{{ $lokasi->nama_lokasi }}</option>
-            @endforeach
-          </select>
-        </div>
+      <div class="mb-3">
+        <label for="id_lokasi" class="form-label">Pilih Lokasi</label>
+        <select name="id_lokasi" id="id_lokasi" class="form-select" required>
+          <option value="">-- Pilih Lokasi --</option>
+          @foreach($lokasiList as $lokasi)
+            <option value="{{ $lokasi->id_lokasi }}" {{ old('id_lokasi') == $lokasi->id_lokasi ? 'selected' : '' }}>{{ $lokasi->nama_lokasi }}</option>
+          @endforeach
+        </select>
+      </div>
 
-        <div class="col-md-6 mb-3">
+      <!-- Switch Button untuk Pilih Barang -->
+      <div class="mb-3">
+        <label class="form-label">Pilih Sumber Barang</label>
+        <div class="btn-group w-100" role="group" id="barangModeGroup">
+          <input type="radio" class="btn-check" name="barang_mode" id="barang_existing" value="existing" {{ old('barang_mode', 'existing') === 'existing' ? 'checked' : '' }}>
+          <label class="btn btn-outline-primary" for="barang_existing">
+            <i class="fa fa-list me-2"></i> Pilih Barang yang Ada
+          </label>
+
+          <input type="radio" class="btn-check" name="barang_mode" id="barang_new" value="new" {{ old('barang_mode') === 'new' ? 'checked' : '' }}>
+          <label class="btn btn-outline-success" for="barang_new">
+            <i class="fa fa-plus me-2"></i> Ajukan Barang Baru
+          </label>
+        </div>
+      </div>
+
+      <!-- Section untuk Pilih Barang Existing -->
+      <div id="section_existing" class="barang-section">
+        <div class="mb-3">
           <label for="id_item" class="form-label">Pilih Barang</label>
-          <select name="id_item" id="id_item" class="form-select" required>
+          <select name="id_item" id="id_item" class="form-select" data-old="{{ old('id_item') }}">
             <option value="">-- Pilih Barang --</option>
           </select>
         </div>
       </div>
 
-      <div class="mb-3">
-        <label for="isi_laporan" class="form-label">Deskripsi</label>
-        <textarea name="isi_laporan" id="isi_laporan" class="form-control" rows="4" required>{{ old('isi_laporan') }}</textarea>
+      <!-- Section untuk Input Barang Baru -->
+      <div id="section_new" class="barang-section" style="display: none;">
+        <div class="mb-3">
+          <label for="nama_barang_baru" class="form-label">Nama Barang Baru <span class="text-danger">*</span></label>
+          <input type="text" name="nama_barang_baru" id="nama_barang_baru" class="form-control" 
+                 placeholder="Masukkan nama barang yang ingin diajukan" value="{{ old('nama_barang_baru') }}">
+        </div>
+        <div class="mb-3">
+          <label for="deskripsi_barang" class="form-label">Deskripsi Barang (Opsional)</label>
+          <textarea name="deskripsi_barang" id="deskripsi_barang" class="form-control" rows="4" 
+                    placeholder="Deskripsi barang yang ingin diajukan">{{ old('deskripsi_barang') }}</textarea>
+        </div>
+        <div class="mb-4">
+          <label for="foto_barang" class="form-label">Foto Barang (Opsional)</label>
+          <input type="file" name="foto_barang" id="foto_barang" class="form-control" accept="image/*">
+          <small class="text-muted">Format: JPG, JPEG, PNG. Maksimal 2MB</small>
+        </div>
       </div>
 
-      <div class="mb-4">
-        <label for="foto" class="form-label">Foto (opsional)</label>
-        <input type="file" name="foto" id="foto" class="form-control">
+      <!-- Section untuk Deskripsi dan Foto Pengaduan (muncul saat pilih barang existing) -->
+      <div id="section_pengaduan" class="pengaduan-section">
+        <div class="mb-3">
+          <label for="isi_laporan" class="form-label">Deskripsi Pengaduan</label>
+          <textarea name="isi_laporan" id="isi_laporan" class="form-control" rows="4" required>{{ old('isi_laporan') }}</textarea>
+        </div>
+
+        <div class="mb-4">
+          <label for="foto" class="form-label">Foto Pengaduan (Opsional)</label>
+          <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+          <small class="text-muted">Format: JPG, JPEG, PNG. Maksimal 2MB</small>
+        </div>
       </div>
 
       <!-- Tombol Kirim di tengah -->
@@ -312,6 +352,35 @@
   </div>
 
   <script>
+    function toggleBarangSection(mode) {
+      if (mode === 'existing') {
+        // Mode: Pilih Barang yang Ada
+        $('#section_existing').show();
+        $('#section_new').hide();
+        $('#section_pengaduan').show(); // Tampilkan foto dan deskripsi pengaduan
+        $('#id_item').prop('required', true).prop('disabled', false);
+        $('#nama_barang_baru').prop('required', false);
+        $('#isi_laporan').prop('required', true); // Deskripsi pengaduan wajib
+        $('#deskripsi_barang').prop('required', false);
+      } else {
+        // Mode: Ajukan Barang Baru
+        $('#section_existing').hide();
+        $('#section_new').show();
+        $('#section_pengaduan').hide(); // Sembunyikan foto dan deskripsi pengaduan
+        $('#id_item').prop('required', false).prop('disabled', true).val('');
+        $('#nama_barang_baru').prop('required', true);
+        $('#isi_laporan').prop('required', false); // Deskripsi pengaduan tidak wajib
+        $('#deskripsi_barang').prop('required', false);
+      }
+    }
+
+    // Toggle antara pilih barang existing atau input barang baru
+    $('input[name="barang_mode"]').on('change', function() {
+      const mode = $(this).val();
+      toggleBarangSection(mode);
+    });
+
+    // Load barang berdasarkan lokasi
     $('#id_lokasi').on('change', function () {
       let idLokasi = $(this).val();
       $('#id_item').html('<option value="">Memuat...</option>');
@@ -329,12 +398,52 @@
             options = '<option value="">Tidak ada barang di lokasi ini</option>';
           }
           $('#id_item').html(options);
+          const oldItem = $('#id_item').data('old');
+          if (oldItem) {
+            $('#id_item').val(oldItem);
+            $('#id_item').data('old', '');
+          }
         }).fail(function() {
           console.error('Gagal memuat data barang');
           $('#id_item').html('<option value="">Gagal memuat data</option>');
         });
       } else {
         $('#id_item').html('<option value="">-- Pilih Barang --</option>');
+      }
+    });
+
+    // Set tampilan awal berdasarkan nilai lama
+    $(document).ready(function() {
+      const initialMode = $('input[name="barang_mode"]:checked').val() || 'existing';
+      toggleBarangSection(initialMode);
+
+      const oldLokasi = @json(old('id_lokasi'));
+      if (oldLokasi) {
+        $('#id_lokasi').trigger('change');
+      }
+    });
+
+    // Validasi form sebelum submit
+    $('form').on('submit', function(e) {
+      const mode = $('input[name="barang_mode"]:checked').val();
+      
+      if (mode === 'existing') {
+        if (!$('#id_item').val()) {
+          e.preventDefault();
+          alert('Silakan pilih barang yang ada atau pilih opsi "Ajukan Barang Baru"');
+          return false;
+        }
+        if (!$('#isi_laporan').val().trim()) {
+          e.preventDefault();
+          alert('Silakan isi deskripsi pengaduan');
+          return false;
+        }
+      } else {
+        if (!$('#nama_barang_baru').val().trim()) {
+          e.preventDefault();
+          alert('Silakan masukkan nama barang baru');
+          return false;
+        }
       }
     });
   </script>

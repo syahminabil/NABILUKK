@@ -7,39 +7,26 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    body {
-      background: #f4f6f9;
-      font-family: Arial, sans-serif;
-    }
-    .container {
-      margin-top: 40px;
-    }
-    .card {
-      border-radius: 10px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    }
-    table th {
-      background-color: #0d6efd;
-      color: white;
-      vertical-align: middle;
-    }
-    td {
-      vertical-align: middle;
-    }
-    .text-wrap {
-      white-space: normal !important;
-      word-wrap: break-word;
-      max-width: 350px;
-    }
+    :root { --indigo:#4338ca; --blue:#2563eb; --gray:#f8fafc; --white:#ffffff; --text-dark:#1e293b; }
+    body { background: var(--gray); font-family:'Segoe UI', sans-serif; color: var(--text-dark); }
+    .container-custom { max-width: 1100px; margin-top: 60px; margin-left:auto; margin-right:auto; }
+    .card { border-radius: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); border: none; }
+    .card-header { background: linear-gradient(to right, var(--indigo), var(--blue)); color: #fff; border-top-left-radius: 20px; border-top-right-radius: 20px; }
+    .btn-secondary { background: linear-gradient(to right, var(--indigo), var(--blue)); border: none; border-radius: 10px; }
+    .btn-secondary:hover { opacity: 0.9; transform: translateY(-2px); }
+    table { border-radius: 12px; overflow: hidden; }
+    thead { background: linear-gradient(to right, var(--indigo), var(--blue)); color: #fff; }
+    td { vertical-align: middle; }
+    .text-wrap { white-space: normal !important; word-wrap: break-word; max-width: 350px; }
   </style>
 </head>
 <body>
 
-<div class="container">
+<div class="container-custom">
   <div class="card">
-    <div class="card-header bg-primary text-white">
-      <i class="fa fa-ban"></i> Riwayat Penolakan Pengaduan
-      <a href="/petugas/dashboard" class="btn btn-secondary">← Kembali ke Dashboard</a>
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <div><i class="fa fa-ban"></i> Riwayat Penolakan Pengaduan</div>
+      <a href="{{ route('petugas.dashboard') }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Kembali ke Dashboard</a>
     </div>
     <div class="card-body table-responsive">
       @if ($penolakan->isEmpty())

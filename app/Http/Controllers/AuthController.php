@@ -35,7 +35,7 @@ class AuthController extends Controller
             }
         }
 
-        return back()->with('error', 'Email atau password salah.');
+        return back()->withInput()->with('error', 'Email atau password salah.');
     }
 
     // ✅ Form register

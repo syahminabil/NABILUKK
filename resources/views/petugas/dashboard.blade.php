@@ -139,7 +139,7 @@
           </li>
         </ul>
 
-        <form method="POST" action="{{ route('logout') }}" class="d-flex">
+        <form method="POST" action="{{ route('logout') }}" class="d-flex ms-auto">
           @csrf
           <button class="btn btn-danger" type="submit"><i class="fa fa-sign-out-alt"></i> Logout</button>
         </form>

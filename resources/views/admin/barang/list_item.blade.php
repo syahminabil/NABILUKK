@@ -5,106 +5,25 @@
     <title>Barang di {{ $lokasi->nama_lokasi }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .container-custom {
-            max-width: 900px;
-            background: #fff;
-            border-radius: 16px;
-            padding: 25px 30px;
-            margin: 50px auto;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-            border-top: 5px solid #dc3545;
-        }
-
-        h2 {
-            font-weight: 700;
-            color: #000;
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .btn-add {
-            background-color: #000;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-
-        .btn-add:hover {
-            background-color: #dc3545;
-        }
-
-        .table {
-            border-radius: 10px;
-            overflow: hidden;
-            font-size: 15px;
-        }
-
-        thead {
-            background-color: #000;
-            color: #fff;
-            text-align: center;
-        }
-
-        tbody tr:hover {
-            background-color: #f2f2f2;
-        }
-
-        td img {
-            width: 65px;
-            height: 65px;
-            object-fit: cover;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        td, th {
-            vertical-align: middle !important;
-            text-align: center;
-        }
-
-        .btn-warning, .btn-danger {
-            border: none;
-            font-weight: 600;
-            border-radius: 6px;
-            padding: 4px 10px;
-        }
-
-        .btn-warning:hover {
-            background-color: #ffc107;
-        }
-
-        .btn-danger:hover {
-            background-color: #dc3545;
-        }
-
-        .alert {
-            border-radius: 8px;
-        }
-
-        .btn-back {
-            background-color: #6c757d;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-weight: 500;
-            padding: 7px 14px;
-            transition: 0.2s;
-        }
-
-        .btn-back:hover {
-            background-color: #dc3545;
-        }
-
-        .table-container {
-            overflow-x: auto;
-        }
+        :root { --indigo:#4338ca; --blue:#2563eb; --gray:#f8fafc; --white:#ffffff; --text-dark:#1e293b; }
+        body { background-color: var(--gray); font-family:'Segoe UI', sans-serif; }
+        .container-custom { max-width: 1000px; background: var(--white); border-radius: 20px; padding: 30px 40px; margin: 60px auto; box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-top: 6px solid var(--blue); }
+        h2 { font-weight: 700; color: var(--indigo); text-align: center; margin-bottom: 25px; }
+        .btn-add { background: linear-gradient(to right, var(--indigo), var(--blue)); color:#fff; border: none; border-radius: 10px; font-weight: 600; transition: 0.25s; }
+        .btn-add:hover { opacity: 0.9; transform: translateY(-2px); }
+        .table { border-radius: 12px; overflow: hidden; font-size: 15px; }
+        thead { background: linear-gradient(to right, var(--indigo), var(--blue)); color: #fff; text-align: center; }
+        tbody tr:hover { background-color: #eef2ff; }
+        td img { width: 65px; height: 65px; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1; }
+        td, th { vertical-align: middle !important; text-align: center; }
+        .btn-warning, .btn-danger { border: none; font-weight: 600; border-radius: 8px; padding: 6px 12px; }
+        .btn-warning { background: linear-gradient(to right, var(--indigo), var(--blue)); color:#fff; }
+        .btn-warning:hover { opacity: 0.9; }
+        .btn-danger:hover { background-color: #ef4444; }
+        .alert { border-radius: 10px; }
+        .btn-back { background: linear-gradient(to right, var(--indigo), var(--blue)); color:#fff; border: none; border-radius: 10px; font-weight: 500; padding: 8px 16px; transition: 0.25s; }
+        .btn-back:hover { opacity: 0.9; transform: translateY(-2px); }
+        .table-container { overflow-x: auto; }
     </style>
 </head>
 <body>
