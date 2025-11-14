@@ -106,6 +106,9 @@
       min-height: 100vh;
       padding: 30px;
       background: linear-gradient(180deg, var(--light-blue), var(--white));
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .card {
@@ -148,7 +151,7 @@
     /* Tombol Kirim (besar di tengah, sedikit lebih naik) */
     .btn-submit {
       display: block;
-      margin: 25px auto 10px auto; /* naik sedikit dari bawah */
+      margin: 25px auto 10px auto;
       background: linear-gradient(90deg, #2563eb, #1d4ed8);
       color: white;
       font-weight: 600;
@@ -193,6 +196,10 @@
     .alert {
       border-radius: 10px;
       font-size: 14px;
+    }
+    @media (max-width: 576px) {
+      .card { padding: 20px; border-radius: 16px; }
+      .btn-submit { width: 100%; }
     }
   </style>
 </head>

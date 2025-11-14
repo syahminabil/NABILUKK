@@ -267,14 +267,19 @@
                       </button>
 
                       {{-- Tombol aksi berdasarkan status --}}
-                      @if($p->status === 'Diajukan' || $p->status === 'Disetujui')
-                          <!-- MULAI pengerjaan -->
+                      @if($p->status === 'Disetujui')
+                          <!-- MULAI pengerjaan - hanya muncul jika admin sudah menyetujui -->
                           <form method="POST" action="{{ route('petugas.pengaduan.mulai', $p->id_pengaduan) }}" class="d-inline">
                               @csrf
                               <button type="submit" class="btn btn-sm btn-outline-warning" onclick="return confirm('Mulai pengerjaan pengaduan ini?')" title="Mulai Pengerjaan">
                                   <i class="fa fa-play"></i> Mulai
                               </button>
                           </form>
+                      @elseif($p->status === 'Diajukan')
+                          <!-- Info: Menunggu persetujuan admin -->
+                          <span class="badge bg-secondary" title="Menunggu persetujuan admin">
+                              <i class="fa fa-clock"></i> Menunggu Admin
+                          </span>
 
                       @elseif($p->status === 'Diproses')
                           <!-- SELESAIKAN -->

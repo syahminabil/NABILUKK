@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADMIN | Daftar Ruang</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -25,6 +26,11 @@
         .btn-back { background: linear-gradient(to right, var(--indigo), var(--blue)); color:#fff; border-radius:10px; font-weight:500; padding:6px 12px; text-decoration:none; transition:0.25s; }
         .btn-back:hover { opacity:0.9; transform: translateY(-2px); }
         .alert-success { border-left: 4px solid var(--blue); }
+        @media (max-width: 576px) {
+          .container-custom { padding: 20px; }
+          h3 { font-size: 1.25rem; }
+          thead th, tbody td { font-size: 13px; }
+        }
     </style>
 </head>
 <body>
@@ -43,6 +49,7 @@
             <i class="fa fa-plus-square"></i> Tambah Ruang
         </a>
 
+        <div class="table-responsive">
         <table class="table table-hover table-custom align-middle">
             <thead>
                 <tr>
@@ -78,6 +85,7 @@
                 @endforelse
             </tbody>
         </table>
+        </div>
     </div>
 
 </body>

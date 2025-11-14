@@ -69,9 +69,10 @@ class PetugasDashboardController extends Controller
     {
         $pengaduan = Pengaduan::findOrFail($id);
 
-        // Cek agar hanya pengaduan dengan status Diajukan atau Disetujui yang bisa dimulai
-        if (!in_array($pengaduan->status, ['Diajukan', 'Disetujui'])) {
-            return redirect()->back()->with('error', 'Pengaduan tidak dapat dimulai. Status harus Diajukan atau Disetujui.');
+        // Cek agar hanya pengaduan dengan status Disetujui yang bisa dimulai
+        // Petugas tidak bisa memulai jika admin belum menyetujui
+        if ($pengaduan->status !== 'Disetujui') {
+            return redirect()->back()->with('error', 'Pengaduan belum disetujui oleh admin. Harap tunggu persetujuan admin terlebih dahulu.');
         }
 
         // Pastikan id_petugas terisi

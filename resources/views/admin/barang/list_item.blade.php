@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barang di {{ $lokasi->nama_lokasi }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -24,6 +25,12 @@
         .btn-back { background: linear-gradient(to right, var(--indigo), var(--blue)); color:#fff; border: none; border-radius: 10px; font-weight: 500; padding: 8px 16px; transition: 0.25s; }
         .btn-back:hover { opacity: 0.9; transform: translateY(-2px); }
         .table-container { overflow-x: auto; }
+        @media (max-width: 576px) {
+          .container-custom { padding: 20px; }
+          h2 { font-size: 1.25rem; }
+          thead th, tbody td { font-size: 13px; }
+          .btn-add, .btn-back { padding: 6px 12px; font-size: 13px; }
+        }
     </style>
 </head>
 <body>
@@ -39,7 +46,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <div class="table-container">
+    <div class="table-container table-responsive">
         <table class="table table-bordered align-middle shadow-sm">
             <thead>
                 <tr>
@@ -59,7 +66,7 @@
                             <td>
                                 @if($list->item->foto)
                                     <img src="{{ Storage::url($list->item->foto) }}" 
-                                         alt="Foto {{ $list->item->nama_item }}">
+                                         alt="Foto {{ $list->item->nama_item }}" class="img-fluid" style="max-width:100px; height:auto;">
                                 @else
                                     <span class="text-muted small">Tidak ada</span>
                                 @endif

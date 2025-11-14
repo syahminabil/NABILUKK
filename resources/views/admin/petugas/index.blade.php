@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADMINISTRATOR | Data Petugas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -113,6 +114,11 @@
             border-color: var(--blue);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
         }
+        @media (max-width: 576px) {
+            .container-custom { padding: 20px; }
+            .header-title { font-size: 1.1rem; }
+            thead th, tbody td { font-size: 13px; }
+        }
     </style>
 </head>
 <body>
@@ -138,6 +144,7 @@
             </div>
         </div>
 
+        <div class="table-responsive">
         <table class="table table-hover align-middle" id="petugasTable">
             <thead>
                 <tr>
@@ -176,6 +183,7 @@
                 @endforelse
             </tbody>
         </table>
+        </div>
 
         <!-- Tombol Kembali -->
         <div class="text-end mt-3">

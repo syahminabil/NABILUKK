@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Ruang</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -12,6 +13,10 @@
         .btn-secondary { background: linear-gradient(to right, var(--indigo), var(--blue)); border: none; color: #fff; border-radius: 10px; font-weight: 500; }
         .btn-secondary:hover { opacity: 0.9; transform: translateY(-2px); }
         .list-group-item-action:hover { background-color: #eef2ff; }
+        @media (max-width: 576px) {
+          .container-custom { padding: 20px; }
+          h2 { font-size: 1.25rem; }
+        }
     </style>
 </head>
 <body>

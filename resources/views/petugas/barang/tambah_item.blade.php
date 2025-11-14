@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Barang di {{ $lokasi->nama_lokasi }}</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
@@ -15,6 +16,10 @@
     .btn-success, .btn-secondary { border: none; border-radius: 10px; }
     .btn-success { background: linear-gradient(to right, var(--indigo), var(--blue)); font-weight: 600; }
     .btn-success:hover { opacity: 0.9; transform: translateY(-2px); }
+    @media (max-width: 576px) {
+      .container-custom { padding: 20px; }
+      h2 { font-size: 1.25rem; }
+    }
 </style>
 </head>
 <body>

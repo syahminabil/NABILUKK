@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADMIN | Temporary Items</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -121,6 +122,12 @@
             transform: scale(1.05);
             border-color: var(--blue);
         }
+        @media (max-width: 576px) {
+            .container-custom { padding: 20px; }
+            h3 { font-size: 1.25rem; }
+            thead th, tbody td { font-size: 13px; }
+            .photo-thumbnail { width: 50px; height: 50px; }
+        }
     </style>
 </head>
 <body>
@@ -143,6 +150,7 @@
         <div class="alert alert-error">{{ session('error') }}</div>
     @endif
 
+    <div class="table-responsive">
     <table class="table table-hover table-custom align-middle shadow-sm">
         <thead>
             <tr>
@@ -211,6 +219,7 @@
             @endif
         </tbody>
     </table>
+    </div>
 </div>
 
 <!-- Modal Foto -->

@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Barang: {{ $item->nama_item }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -18,6 +19,11 @@
         .btn-back:hover { opacity: 0.9; transform: translateY(-2px); }
         .alert { border-radius: 10px; }
         .preview-img { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1; }
+        @media (max-width: 576px) {
+          .container-custom { padding: 20px; }
+          h3 { font-size: 1.25rem; }
+          .preview-img { width: 110px; height: 110px; }
+        }
     </style>
 </head>
 <body>

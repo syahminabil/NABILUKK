@@ -2,9 +2,10 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barang di {{ $lokasi->nama_lokasi }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
+  <style>
         :root { --indigo:#4338ca; --blue:#2563eb; --gray:#f8fafc; --white:#ffffff; --text-dark:#1e293b; }
         body { background-color: var(--gray); font-family:'Segoe UI', sans-serif; }
         .container-custom { max-width: 1000px; background: var(--white); border-radius: 20px; padding: 30px 40px; margin: 60px auto; box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-top: 6px solid var(--blue); }
@@ -20,6 +21,12 @@
         .btn-warning { background: linear-gradient(to right, var(--indigo), var(--blue)); color:#fff; }
         .btn-warning:hover { opacity:0.9; }
         .btn-danger:hover { background-color:#ef4444; }
+        .text-wrap { white-space: normal !important; word-wrap: break-word; }
+        @media (max-width: 576px) {
+          .container-custom { padding: 20px; }
+          thead th { font-size: 13px; }
+          tbody td { font-size: 13px; }
+        }
     </style>
 </head>
 <body>
@@ -34,6 +41,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
+    <div class="table-responsive">
     <table class="table table-bordered table-striped align-middle">
         <thead class="table-dark">
             <tr>
@@ -52,14 +60,13 @@
                                 {{-- 🔹 Gunakan Storage::url agar path selalu benar --}}
                                 <img src="{{ Storage::url($list->item->foto) }}" 
                                      alt="Foto {{ $list->item->nama_item }}" 
-                                     width="100" 
-                                     class="rounded border">
+                                     class="rounded border img-fluid" style="max-width:100px; height:auto;">
                             @else
                                 <span class="text-muted">Tidak ada</span>
                             @endif
                         </td>
                         <td>{{ $list->item->nama_item }}</td>
-                        <td>{{ $list->item->deskripsi }}</td>
+                        <td class="text-wrap">{{ $list->item->deskripsi }}</td>
                         <td>
                             <a href="{{ route('petugas.item.edit', $list->item->id_item) }}" class="btn btn-warning btn-sm">Edit</a>
                             <form action="{{ route('petugas.item.delete', $list->item->id_item) }}" method="POST" class="d-inline">
@@ -73,6 +80,7 @@
             @endforeach
         </tbody>
     </table>
+    </div>
 </div>
 </body>
 </html>
