@@ -49,7 +49,6 @@
     {{-- 🔹 Form Edit Barang --}}
     <form action="{{ route('item.update', $item->id_item) }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('PUT')
 
         <div class="mb-3">
             <label for="nama_item" class="form-label">Nama Barang</label>

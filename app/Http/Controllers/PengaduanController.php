@@ -51,14 +51,32 @@ class PengaduanController extends Controller
 
     /**
      * Hapus pengaduan (admin)
+     * Admin hanya bisa menghapus jika status: Selesai atau Ditolak
+     * Tidak bisa menghapus jika status: Diajukan, Disetujui, atau Diproses
      */
     public function destroy($id)
     {
-        $pengaduan = Pengaduan::findOrFail($id);
+        $pengaduan = Pengaduan::with('penolakan')->findOrFail($id);
+
+        // Cek status - admin tidak bisa menghapus jika status Diajukan, Disetujui, atau Diproses
+        if (in_array($pengaduan->status, ['Diajukan', 'Disetujui', 'Diproses'])) {
+            return redirect()->route('dashboard')
+                ->with('error', 'Tidak dapat menghapus pengaduan yang statusnya "Diajukan", "Disetujui", atau "Diproses". Hanya bisa menghapus pengaduan dengan status "Selesai" atau "Ditolak".');
+        }
 
         // Hapus file foto di storage/public jika ada
         if ($pengaduan->foto) {
             Storage::disk('public')->delete($pengaduan->foto);
+        }
+
+        // Hapus foto saran jika ada
+        if ($pengaduan->foto_saran) {
+            Storage::disk('public')->delete($pengaduan->foto_saran);
+        }
+
+        // Hapus relasi penolakan jika ada
+        if ($pengaduan->penolakan) {
+            $pengaduan->penolakan->delete();
         }
 
         $pengaduan->delete();

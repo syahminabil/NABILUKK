@@ -452,7 +452,8 @@
                   <th width="10%">Petugas</th>
                   <th width="10%" class="text-center">Tgl Pengajuan</th>
                   <th width="10%" class="text-center">Tgl Selesai</th>
-                  <th width="25%">Saran Petugas</th>
+                  <th width="20%">Alasan Penolakan</th>
+                  <th width="20%">Saran Petugas</th>
                   <th width="10%" class="text-center">Foto Saran</th>
                 </tr>
               </thead>
@@ -497,6 +498,15 @@
                   {{-- Tanggal Selesai --}}
                   <td class="text-center">
                     {{ $p->tgl_selesai ? \Carbon\Carbon::parse($p->tgl_selesai)->format('d-m-Y') : '-' }}
+                  </td>
+
+                  {{-- Alasan Penolakan --}}
+                  <td class="saran-cell">
+                    @if($p->status === 'Ditolak' && $p->penolakan && $p->penolakan->alasan)
+                      <span class="text-danger fw-bold">{{ $p->penolakan->alasan }}</span>
+                    @else
+                      <span class="text-muted">-</span>
+                    @endif
                   </td>
 
                   {{-- Saran Petugas --}}

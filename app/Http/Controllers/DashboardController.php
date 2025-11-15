@@ -29,6 +29,16 @@ class DashboardController extends Controller
         $q = $request->get('q');
 
         $pengaduanQuery = Pengaduan::with(['user', 'petugas', 'item'])
+            ->orderByRaw("
+                CASE 
+                    WHEN status = 'Diajukan' THEN 1
+                    WHEN status = 'Disetujui' THEN 2
+                    WHEN status = 'Diproses' THEN 3
+                    WHEN status = 'Selesai' THEN 4
+                    WHEN status = 'Ditolak' THEN 5
+                    ELSE 6
+                END
+            ")
             ->orderBy('tgl_pengajuan', 'desc');
 
         if ($q) {

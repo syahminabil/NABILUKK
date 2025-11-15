@@ -35,8 +35,6 @@
             <h4 class="mb-3 text-center fw-semibold text-primary">Edit Role Petugas</h4>
 
             <form action="{{ route('admin.petugas.update', $user->id) }}" method="POST">
-                @csrf
-                @method('PUT')
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Nama Petugas</label>

@@ -28,7 +28,20 @@ class PetugasDashboardController extends Controller
             });
         }
 
-        $pengaduan = $query->get();
+        $pengaduan = $query
+            ->orderByRaw("
+                CASE 
+                    WHEN status = 'Diajukan' THEN 1
+                    WHEN status = 'Disetujui' THEN 2
+                    WHEN status = 'Diproses' THEN 3
+                    WHEN status = 'Selesai' THEN 4
+                    WHEN status = 'Ditolak' THEN 5
+                    ELSE 6
+                END
+            ")
+            ->orderBy('tgl_pengajuan', 'desc')
+            ->get();
+            
         $pengaduanTerbaru = $query->latest()->take(10)->get();
 
         $totalPengaduan   = Pengaduan::count();

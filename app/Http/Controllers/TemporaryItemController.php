@@ -7,6 +7,7 @@ use App\Models\Item;
 use App\Models\Lokasi;
 use App\Models\ListLokasi;
 use App\Models\Pengaduan;
+use App\Models\Penolakan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -236,29 +237,91 @@ class TemporaryItemController extends Controller
     }
 
     /**
-     * Reject temporary item
+     * Reject temporary item - masuk ke penolakan
      */
-    public function reject($id)
+    public function reject(Request $request, $id)
     {
+        $request->validate([
+            'alasan' => 'required|string|min:5|max:500',
+        ]);
+
         $temporaryItem = TemporaryItem::findOrFail($id);
 
         if ($temporaryItem->status !== 'pending') {
             return redirect()->back()->with('error', 'Item ini sudah diproses sebelumnya.');
         }
 
-        // Hapus foto jika ada
-        if ($temporaryItem->foto && Storage::disk('public')->exists($temporaryItem->foto)) {
-            Storage::disk('public')->delete($temporaryItem->foto);
-        }
-        if ($temporaryItem->status !== 'approved' && $temporaryItem->foto_pengaduan && Storage::disk('public')->exists($temporaryItem->foto_pengaduan)) {
-            Storage::disk('public')->delete($temporaryItem->foto_pengaduan);
-        }
+        DB::beginTransaction();
+        try {
+            // Pastikan ada pengaduan untuk dihubungkan dengan penolakan
+            $pengaduanId = $temporaryItem->id_pengaduan;
 
-        $temporaryItem->update(['status' => 'rejected']);
+            // Jika belum ada pengaduan, buat pengaduan baru dengan status Ditolak
+            if (!$pengaduanId) {
+                if (!$temporaryItem->id_user) {
+                    throw new \Exception('ID User tidak ditemukan pada temporary item.');
+                }
 
-        return redirect()
-            ->route('admin.temporary.index')
-            ->with('success', 'Barang temporary ditolak.');
+                // Gunakan foto_pengaduan jika ada, jika tidak gunakan foto barang
+                $fotoPengaduan = $temporaryItem->foto_pengaduan ?? $temporaryItem->foto;
+                
+                // Jika foto berasal dari temporary (foto barang), salin ke folder pengaduan
+                if ($fotoPengaduan && strpos($fotoPengaduan, 'temporary/') !== false) {
+                    if (Storage::disk('public')->exists($fotoPengaduan)) {
+                        $newFotoPath = 'pengaduan/' . basename($fotoPengaduan);
+                        Storage::disk('public')->copy($fotoPengaduan, $newFotoPath);
+                        $fotoPengaduan = $newFotoPath;
+                    }
+                }
+
+                $pengaduan = Pengaduan::create([
+                    'id_user'        => $temporaryItem->id_user,
+                    'nama_pengaduan' => $temporaryItem->judul_pengaduan ?? 'Pengajuan Barang Baru: ' . $temporaryItem->nama_barang_baru,
+                    'deskripsi'      => $temporaryItem->deskripsi_pengaduan ?? $temporaryItem->deskripsi_barang_baru ?? '',
+                    'lokasi'         => $temporaryItem->lokasi_barang_baru ?? '',
+                    'id_item'        => null,
+                    'foto'           => $fotoPengaduan,
+                    'status'         => 'Ditolak',
+                    'tgl_pengajuan'  => now(),
+                    'id_petugas'     => null,
+                    'saran_petugas'  => null,
+                ]);
+
+                $pengaduanId = $pengaduan->id_pengaduan;
+
+                // Update temporary item dengan id_pengaduan
+                $temporaryItem->update(['id_pengaduan' => $pengaduanId]);
+            } else {
+                // Jika sudah ada pengaduan, update status menjadi Ditolak
+                $pengaduan = Pengaduan::find($pengaduanId);
+                if ($pengaduan) {
+                    $pengaduan->update(['status' => 'Ditolak']);
+                }
+            }
+
+            // Buat record penolakan
+            Penolakan::create([
+                'id_pengaduan' => $pengaduanId,
+                'id_petugas'   => null,
+                'alasan'       => $request->alasan,
+            ]);
+
+            // Update status temporary item menjadi rejected
+            $temporaryItem->update(['status' => 'rejected']);
+
+            DB::commit();
+
+            return redirect()
+                ->route('admin.temporary.index')
+                ->with('success', 'Barang temporary ditolak dan masuk ke daftar penolakan.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            \Log::error('Error rejecting temporary item: ' . $e->getMessage(), [
+                'temporary_item_id' => $id,
+                'trace' => $e->getTraceAsString()
+            ]);
+            return back()->withErrors(['error' => 'Gagal menolak item: ' . $e->getMessage()]);
+        }
     }
 
     /**

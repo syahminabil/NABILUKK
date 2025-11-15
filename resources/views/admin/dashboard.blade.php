@@ -339,12 +339,16 @@
     </form>
   @endif
 
-  <!-- Form delete -->
-  <form method="POST" action="{{ route('admin.pengaduan.destroy', $item->id_pengaduan) }}" onsubmit="return confirm('Yakin ingin menghapus pengaduan ini?');" class="d-inline">
-    @csrf
-    @method('DELETE')
-    <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fa fa-trash"></i></button>
-  </form>
+  <!-- Form delete - hanya tampil jika status Selesai atau Ditolak -->
+  @if(in_array($item->status, ['Selesai', 'Ditolak']))
+    <form method="POST" action="{{ route('admin.pengaduan.destroy', $item->id_pengaduan) }}" onsubmit="return confirm('Yakin ingin menghapus pengaduan ini?');" class="d-inline">
+      @csrf
+      @method('DELETE')
+      <button type="submit" class="btn btn-outline-danger btn-sm" title="Hapus pengaduan"><i class="fa fa-trash"></i></button>
+    </form>
+  @else
+    <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Tidak dapat menghapus pengaduan dengan status {{ $item->status }}. Hanya bisa menghapus jika status Selesai atau Ditolak."><i class="fa fa-trash"></i></button>
+  @endif
 </div>
 
                 </td>

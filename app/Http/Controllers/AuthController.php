@@ -11,6 +11,23 @@ class AuthController extends Controller
     // ✅ Form login
     public function showLoginForm()
     {
+        // Jika user sudah login, redirect ke dashboard sesuai role
+        if (Auth::check()) {
+            $user = Auth::user();
+            
+            switch ($user->role) {
+                case 'admin':
+                    return redirect()->route('dashboard')->with('info', 'Anda sudah login. Silakan logout terlebih dahulu jika ingin login dengan akun lain.');
+                case 'petugas':
+                    return redirect()->route('petugas.dashboard')->with('info', 'Anda sudah login. Silakan logout terlebih dahulu jika ingin login dengan akun lain.');
+                case 'pengguna':
+                    return redirect()->route('user.dashboard')->with('info', 'Anda sudah login. Silakan logout terlebih dahulu jika ingin login dengan akun lain.');
+                default:
+                    Auth::logout();
+                    return view('auth.login');
+            }
+        }
+        
         return view('auth.login');
     }
 
@@ -41,6 +58,23 @@ class AuthController extends Controller
     // ✅ Form register
     public function showRegisterForm()
     {
+        // Jika user sudah login, redirect ke dashboard sesuai role
+        if (Auth::check()) {
+            $user = Auth::user();
+            
+            switch ($user->role) {
+                case 'admin':
+                    return redirect()->route('dashboard')->with('info', 'Anda sudah login. Silakan logout terlebih dahulu jika ingin mendaftar dengan akun lain.');
+                case 'petugas':
+                    return redirect()->route('petugas.dashboard')->with('info', 'Anda sudah login. Silakan logout terlebih dahulu jika ingin mendaftar dengan akun lain.');
+                case 'pengguna':
+                    return redirect()->route('user.dashboard')->with('info', 'Anda sudah login. Silakan logout terlebih dahulu jika ingin mendaftar dengan akun lain.');
+                default:
+                    Auth::logout();
+                    return view('auth.register');
+            }
+        }
+        
         return view('auth.register');
     }
 

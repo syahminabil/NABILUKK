@@ -205,6 +205,13 @@
                                         <i class="fa fa-check"></i> Approve
                                     </button>
                                 </form>
+                                
+                                <button type="button" class="btn btn-danger btn-sm" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#rejectModal{{ $item->id_temporary }}"
+                                        title="Reject">
+                                    <i class="fa fa-times"></i> Tolak
+                                </button>
                             @endif
                         </td>
                     </tr>
@@ -236,6 +243,54 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Reject untuk setiap item -->
+@if(isset($temporaryItems) && $temporaryItems->count() > 0)
+    @foreach($temporaryItems as $item)
+        @if($item->status === 'pending')
+        <div class="modal fade" id="rejectModal{{ $item->id_temporary }}" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title"><i class="fa fa-times-circle me-2"></i>Tolak Barang Temporary</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form action="{{ route('admin.temporary.reject', $item->id_temporary) }}" method="POST">
+                        @csrf
+                        @method('POST')
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label"><strong>Nama Barang:</strong></label>
+                                <p class="text-muted">{{ $item->nama_barang_baru ?? '-' }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="alasan{{ $item->id_temporary }}" class="form-label">
+                                    <strong>Alasan Penolakan <span class="text-danger">*</span></strong>
+                                </label>
+                                <textarea class="form-control" 
+                                          id="alasan{{ $item->id_temporary }}" 
+                                          name="alasan" 
+                                          rows="4" 
+                                          placeholder="Masukkan alasan penolakan..." 
+                                          required
+                                          minlength="5"
+                                          maxlength="500"></textarea>
+                                <small class="form-text text-muted">Minimal 5 karakter, maksimal 500 karakter.</small>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fa fa-times me-1"></i>Tolak dan Masukkan ke Penolakan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endif
+    @endforeach
+@endif
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>

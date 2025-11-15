@@ -23,8 +23,27 @@ use App\Http\Controllers\TemporaryItemController;
 |--------------------------------------------------------------------------
 */
 
-// 🔹 Root ke login
-Route::get('/', fn() => redirect()->route('login'));
+// 🔹 Root - selalu redirect ke login (session akan expire on close)
+Route::get('/', function () {
+    // Jika user sudah login, tetap redirect ke login untuk memastikan session fresh
+    // Karena expire_on_close = true, session akan expire saat browser ditutup
+    if (auth()->check()) {
+        // Jika session masih valid, redirect ke dashboard sesuai role
+        $user = auth()->user();
+        switch ($user->role) {
+            case 'admin':
+                return redirect()->route('dashboard');
+            case 'petugas':
+                return redirect()->route('petugas.dashboard');
+            case 'pengguna':
+                return redirect()->route('user.dashboard');
+            default:
+                return redirect()->route('login');
+        }
+    }
+    // Jika tidak login, redirect ke login
+    return redirect()->route('login');
+});
 
 /* =====================================================
    🔐 AUTH (Login, Register, Logout)
@@ -148,7 +167,7 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
         Route::get('/lokasi/{id_lokasi}/barang/tambah', [PetugasItemController::class, 'create'])->name('item.create');
         Route::post('/lokasi/{id_lokasi}/barang/store', [PetugasItemController::class, 'store'])->name('item.store');
         Route::get('/barang/edit/{id_item}', [PetugasItemController::class, 'edit'])->name('item.edit');
-        Route::post('/barang/update/{id_item}', [PetugasItemController::class, 'update'])->name('item.update');
+        Route::post('/barang/update/{id_item}', [PetugasItemController::class, 'update'])->name('petugas.item.update');
         Route::delete('/barang/delete/{id_item}', [PetugasItemController::class, 'destroy'])->name('item.delete');
 
         // Lokasi CRUD
